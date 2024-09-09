@@ -1,0 +1,45 @@
+<odoo>
+    <!-- Vista de árbol para los pedidos de horno -->
+    <record id="view_pedido_horno_tree" model="ir.ui.view">
+        <field name="name">pedido.horno.tree</field>
+        <field name="model">produccion.pedido.horno</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="fecha_pedido"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para los pedidos de horno -->
+    <record id="view_pedido_horno_form" model="ir.ui.view">
+        <field name="name">pedido.horno.form</field>
+        <field name="model">produccion.pedido.horno</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="fecha_pedido"/>
+                    </group>
+                    <group>
+                        <field name="lineas_pedido">
+                            <tree editable="bottom">
+                                <field name="receta_id"/>
+                                <field name="cantidad"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+     <!-- Acción para los pedidos de horno -->
+    <record id="action_pedido_horno" model="ir.actions.act_window">
+        <field name="name">Pedidos de Horno</field>
+        <field name="res_model">produccion.pedido.horno</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menú de pedidos de horno -->
+    <menuitem id="menu_pedidos_horno" name="Pedidos de Horno" parent="menu_produccion_root" action="action_pedido_horno" sequence="20"/>
+</odoo>

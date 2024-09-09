@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <!-- Plantilla del reporte -->
+        <template id="report_produccion">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Reporte de Producción</h2>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Fecha del Pedido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="pedido">
+                                    <tr>
+                                        <td><t t-esc="pedido.fecha_pedido"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Definición del reporte -->
+        <report
+            id="action_report_produccion"
+            model="produccion.pedido.produccion"
+            string="Reporte de Producción"
+            report_type="qweb-pdf"
+            name="inventario_deli_tutti.report_produccion"
+            file="inventario_deli_tutti.report_produccion"
+        />
+
+
+         <record id="action_report_produccion_all" model="ir.actions.report">
+            <field name="name">Reporte de Producción</field>
+            <field name="model">produccion.pedido.produccion</field>
+            <field name="report_name">inventario_deli_tutti.report_produccion</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="binding_model_id" ref="model_produccion_pedido_produccion"/>
+        </record>
+
+        <!-- Menú para acceder al reporte de producción -->
+        <menuitem id="menu_report_produccion" name="Reporte de Producción"
+                  parent="menu_produccion_root"
+                  action="action_report_produccion_all"
+                  sequence="30"/>
+    </data>
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Nueva categoría de módulo -->
+        <record id="module_category_production" model="ir.module.category">
+            <field name="name">Producción</field>
+            <field name="description">Categoría de Producción</field>
+        </record>
+
+        <!-- Grupo de Seguridad para Producción -->
+        <record id="group_produccion" model="res.groups">
+            <field name="name">Producción</field>
+            <field name="category_id" ref="module_category_production"/>
+        </record>
+
+    </data>
+</odoo>

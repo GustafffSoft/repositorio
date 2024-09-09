@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Plantilla del reporte de salidas -->
+        <template id="report_salida">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Mostrar el logo y el nombre de la compañía -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img t-att-src="logo_url" style="max-height: 100px;"/>
+                            <h3><t t-esc="company_name"/></h3>
+                        </div>
+                        <h2>Reporte de Salidas de Productos</h2>
+                        <p><strong>Desde:</strong> <t t-esc="fecha_inicio"/> <strong>Hasta:</strong> <t t-esc="fecha_fin"/></p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Fecha de Salida</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="salida">
+                                    <t t-foreach="salida.lineas_salida" t-as="linea">
+                                        <tr>
+                                            <td><t t-esc="salida.fecha_salida"/></td>
+                                            <td><t t-esc="linea.producto_id.descripcion"/></td>
+                                            <td><t t-esc="linea.cantidad"/></td>
+                                            <td><t t-esc="linea.detalles"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Definición del reporte -->
+        <report
+            id="report_salida"
+            model="inventario.salida"
+            string="Reporte de Salidas"
+            report_type="qweb-pdf"
+            name="inventario_deli_tutti.report_salida"
+            file="inventario_deli_tutti.report_salida"
+        />
+
+        <!-- Acción personalizada para el reporte de salidas -->
+        <record id="action_report_salida_all" model="ir.actions.report">
+            <field name="name">Reporte de Salidas</field>
+            <field name="model">inventario.salida</field>
+            <field name="report_name">inventario_deli_tutti.report_salida</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="binding_model_id" ref="model_inventario_salida"/>
+        </record>
+
+        <!-- Submenú para el reporte de salidas en la misma sección de "Inventario Deli Tutti" -->
+        <menuitem
+            id="menu_inventory_report_salida"
+            name="Reporte de Salidas"
+            parent="menu_inventory_root"
+            action="action_report_salida_all"
+            sequence="30"
+        />
+    </data>
+</odoo>

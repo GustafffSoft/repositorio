@@ -1,0 +1,15 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Nueva categoría de módulo para Administrador Configurado -->
+        <record id="module_category_administrador_configurado" model="ir.module.category">
+            <field name="name">Administrador Configurado</field>
+            <field name="description">Categoría de Administrador Configurado</field>
+        </record>
+
+        <!-- Grupo de Seguridad para Administrador Configurado -->
+        <record id="group_administrador_configurado" model="res.groups">
+            <field name="name">Administrador Configurado</field>
+            <field name="category_id" ref="module_category_administrador_configurado"/>
+        </record>
+    </data>
+</odoo>

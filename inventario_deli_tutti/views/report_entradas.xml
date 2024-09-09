@@ -1,0 +1,90 @@
+<odoo>
+    <data>
+        <!-- Plantilla del reporte de entradas al almacén -->
+        <template id="report_entradas">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Mostrar el logo y el nombre de la compañía -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img t-att-src="logo_url" style="max-height: 100px;"/>
+                            <h3><t t-esc="company_name"/></h3>
+                        </div>
+                        
+                        <h2>Reporte de Entradas al Almacén</h2>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Número de Factura</th>
+                                    <th>Número de Factura Proveedor</th>
+                                    <th>Concepto</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="entrada">
+                                    <tr>
+                                        <td><t t-esc="entrada['fecha']"/></td>
+                                        <td><t t-esc="entrada['numero_factura']"/></td>
+                                        <td><t t-esc="entrada['numero_factura_proveedor']"/></td>
+                                        <td><t t-esc="entrada['concepto']"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Producto</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Precio Unitario</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="entrada['productos']" t-as="producto">
+                                                        <tr>
+                                                            <td><t t-esc="producto['producto']"/></td>
+                                                            <td><t t-esc="producto['cantidad']"/></td>
+                                                            <td><t t-esc="producto['costo_unitario']"/></td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Definición del reporte -->
+        <report
+            id="action_report_entradas"
+            model="inventario.entrada"
+            string="Reporte de Entradas"
+            report_type="qweb-pdf"
+            name="inventario_deli_tutti.report_entradas"
+            file="inventario_deli_tutti.report_entradas"
+        />
+
+        <!-- Acción personalizada para el reporte de entradas al almacén -->
+        <record id="action_report_entradas_all" model="ir.actions.report">
+            <field name="name">Reporte de Entradas</field>
+            <field name="model">inventario.entrada</field>
+            <field name="report_name">inventario_deli_tutti.report_entradas</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="binding_model_id" ref="model_inventario_entrada"/>
+        </record>
+
+        <!-- Submenú para el reporte de entradas -->
+        <menuitem
+            id="menu_inventory_report_entradas"
+            name="Reporte de Entradas"
+            parent="menu_inventory_root"
+            action="action_report_entradas_all"
+            sequence="30"
+        />
+    </data>
+</odoo>

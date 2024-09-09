@@ -1,0 +1,68 @@
+<odoo>
+    <!-- Vista de árbol para las recetas -->
+    <record id="view_receta_tree" model="ir.ui.view">
+        <field name="name">receta.tree</field>
+        <field name="model">produccion.receta</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="tamano"/>
+                <field name="sabor"/>
+                <field name="costo_por_producto"/>
+                <field name="precio_de_venta"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para las recetas -->
+    <record id="view_receta_form" model="ir.ui.view">
+        <field name="name">receta.form</field>
+        <field name="model">produccion.receta</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="tamano"/>
+                        <field name="sabor"/>
+                    </group>
+                     <group>
+                        <field name="costo_por_producto" readonly="1"/>
+                        <field name="precio_de_venta"/>
+                    </group>
+                    <notebook>
+                        <page string="Insumos">
+                            <field name="lineas_receta">
+                                <tree editable="bottom">
+                                    <field name="producto_id"/>
+                                    <field name="clave_mp"/>
+                                    <field name="um"/>
+                                    <field name="cantidad"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Sub-Recetas">
+                            <field name="subrecetas_rel">
+                                <tree editable="bottom">
+                                    <field name="subreceta_id"/>
+                                    <field name="cantidad"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para las recetas -->
+    <record id="action_receta" model="ir.actions.act_window">
+        <field name="name">Recetas</field>
+        <field name="res_model">produccion.receta</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menú de producción -->
+    <menuitem id="menu_produccion_root" name="Producción" sequence="50"/>
+    <menuitem id="menu_recetas" name="Recetas" parent="menu_produccion_root" action="action_receta" sequence="10"/>
+</odoo>

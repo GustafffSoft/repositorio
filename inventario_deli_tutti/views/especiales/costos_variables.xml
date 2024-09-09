@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_costos_variables_form" model="ir.ui.view">
+        <field name="name">costos.variables.form</field>
+        <field name="model">produccion.costos.variables</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="costo"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_costos_variables_tree" model="ir.ui.view">
+        <field name="name">costos.variables.tree</field>
+        <field name="model">produccion.costos.variables</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="costo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_costos_variables" model="ir.actions.act_window">
+        <field name="name">Costos Variables</field>
+        <field name="res_model">produccion.costos.variables</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_costos_variables" name="Costos Variables" parent="menu_produccion_root" action="action_costos_variables" sequence="50"/>
+</odoo>

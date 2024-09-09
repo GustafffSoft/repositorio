@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_contacto_proveedor_form" model="ir.ui.view">
+        <field name="name">contacto.proveedor.form</field>
+        <field name="model">inventario.contacto_proveedor</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="telefono"/>
+                        <field name="correo"/>
+                    </group>
+                    <group>
+                        <field name="direccion"/>
+                        <field name="ciudad"/>
+                        <field name="pais"/>
+                    </group>
+                    <group>
+                        <field name="notas"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_contacto_proveedor_tree" model="ir.ui.view">
+        <field name="name">contacto.proveedor.tree</field>
+        <field name="model">inventario.contacto_proveedor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="telefono"/>
+                <field name="correo"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_contacto_proveedor" model="ir.actions.act_window">
+        <field name="name">Contactos de Proveedores</field>
+        <field name="res_model">inventario.contacto_proveedor</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_inventory_contacto_proveedor" name="Contactos de Proveedores" parent="menu_inventory_root" action="action_contacto_proveedor" sequence="40"/>
+</odoo>

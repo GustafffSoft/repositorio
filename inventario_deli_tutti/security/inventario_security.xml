@@ -1,0 +1,15 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Nueva categoría de módulo para Almacén Configurado -->
+        <record id="module_category_almacen" model="ir.module.category">
+            <field name="name">Almacén Configurado</field>
+            <field name="description">Categoría para el grupo Almacén Configurado</field>
+        </record>
+
+        <!-- Grupo de Seguridad para Almacén Configurado -->
+        <record id="group_almacen_configurado" model="res.groups">
+            <field name="name">Almacén Configurado</field>
+            <field name="category_id" ref="module_category_almacen"/>
+        </record>
+    </data>
+</odoo>

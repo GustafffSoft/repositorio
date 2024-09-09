@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Plantilla del reporte que lista las descripciones de todos los productos -->
+        <template id="report_inventario">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                             <!-- Mostrar el logo y el nombre de la compañía -->
+                                 <!-- Mostrar el logo y el nombre de la compañía justo antes de la tabla -->
+                                    <div style="text-align: center; margin-bottom: 20px;">
+                                        <img t-att-src="logo_url" style="max-height: 100px;"/>
+                                        <h3><t t-esc="company_name"/></h3>
+                                    </div>
+                        <h2>Listado de Productos</h2>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Descripción</th>
+                                    <th>Unidad de Medida</th>
+                                    <th>Existencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="producto">
+                                    <tr>
+                                        <td><t t-esc="producto['item']"/></td>
+                                        <td><t t-esc="producto['descripcion']"/></td>
+                                        <td><t t-esc="producto['um']"/></td>
+                                        <td><t t-esc="producto['existencia']"/></td>
+                                    </tr>
+                                    <t t-foreach="producto['lotes']" t-as="lote">
+                                        <tr>
+                                            <td></td>
+                                            <td><t t-esc="lote['lote']"/></td>
+                                            <td><t t-esc="lote['costo_unitario']"/></td>
+                                            <td><t t-esc="lote['cantidad']"/></td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <td colspan="3" style="text-align:right;"><strong>Total Costo del Producto:</strong></td>
+                                        <td><strong><t t-esc="producto['total_costo']"/></strong></td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="3" style="text-align:right;"><strong>Total General del Inventario:</strong></td>
+                                    <td><strong><t t-esc="total_inventario"/></strong></td>
+                                </tr>
+                            </tbody>
+
+
+                            <!-- <tbody>
+                                <t t-foreach="docs" t-as="producto">
+                                    <tr>
+                                        <td><t t-esc="producto.item"/></td>
+                                        <td><t t-esc="producto.descripcion"/></td>
+                                        <td><t t-esc="producto.um"/></td>
+                                        <td><t t-esc="producto.existencia"/></td>
+                                    </tr>
+                                </t>
+                            </tbody> -->
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Definición del reporte -->
+        <report
+            id="action_report_inventario"
+            model="inventario.product"
+            string="Reporte de Inventario"
+            report_type="qweb-pdf"
+            name="inventario_deli_tutti.report_inventario"
+            file="inventario_deli_tutti.report_inventario"
+        />
+
+        <!-- Acción personalizada para el reporte de inventario que incluye todos los productos -->
+        <record id="action_report_inventario_all" model="ir.actions.report">
+            <field name="name">Reporte de Inventario</field>
+            <field name="model">inventario.product</field>
+            <field name="report_name">inventario_deli_tutti.report_inventario</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="binding_model_id" ref="model_inventario_product"/>
+            <!-- Elimina la línea binding_type -->
+        </record>
+
+        <!-- Menú raíz de inventario -->
+        <menuitem
+            id="menu_inventory_root"
+            name="Inventario Deli Tutti"
+            sequence="1"
+        />
+
+        <!-- Submenú para los productos -->
+        <menuitem
+            id="menu_inventory_product"
+            name="Productos"
+            parent="menu_inventory_root"
+            action="action_product"
+            sequence="10"
+        />
+
+        <!-- Acción para abrir la vista de lista de productos -->
+        <record id="action_product" model="ir.actions.act_window">
+            <field name="name">Productos</field>
+            <field name="res_model">inventario.product</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Submenú para el reporte de inventario -->
+        <menuitem
+            id="menu_inventory_report"
+            name="Reporte de Inventario"
+            parent="menu_inventory_root"
+            action="action_report_inventario_all"
+            sequence="20"
+        />
+    </data>
+</odoo>
