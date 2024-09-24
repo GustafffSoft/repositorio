@@ -16,6 +16,8 @@ class Product(models.Model):
     existencia = fields.Float(string="Existencia")
     minimo = fields.Float(string="Cantidad Mínima", default=0)
     maximo = fields.Float(string="Cantidad Máxima", default=0)
+    image = fields.Binary(string="Imagen del Producto")
+
 
     @api.model
     def _get_next_item(self):

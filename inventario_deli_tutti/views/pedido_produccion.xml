@@ -22,16 +22,16 @@
         </field>
     </record>
 
-    <!-- Vista de árbol para los pedidos de producción -->
-    <record id="view_pedido_produccion_tree" model="ir.ui.view">
-        <field name="name">pedido.produccion.tree</field>
-        <field name="model">produccion.pedido.produccion</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="fecha_pedido"/>
-            </tree>
-        </field>
-    </record>
+                                    <!-- Vista de árbol para los pedidos de producción -->
+                                    <record id="view_pedido_produccion_tree" model="ir.ui.view">
+                                        <field name="name">pedido.produccion.tree</field>
+                                        <field name="model">produccion.pedido.produccion</field>
+                                        <field name="arch" type="xml">
+                                            <tree>
+                                                <field name="fecha_pedido"/>
+                                            </tree>
+                                        </field>
+                                    </record>
 
       <!-- Acción para los pedidos de producción -->
     <record id="action_pedido_produccion" model="ir.actions.act_window">
