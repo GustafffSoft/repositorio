@@ -57,3 +57,14 @@ access_inventario_contacto_proveedor_almacen,access_inventario_contacto_proveedo
 access_inventario_entrada_linea_almacen,access_inventario_entrada_linea_almacen,model_inventario_entrada_linea,group_almacen_configurado,1,1,1,1
 access_inventario_salida_linea_almacen,access_inventario_salida_linea_almacen,model_inventario_salida_linea,group_almacen_configurado,1,1,1,1
 access_inventario_pedido_almacen,access_inventario_pedido_almacen,model_inventario_pedido,group_almacen_configurado,1,1,1,1
+
+
+
+
+access_venta_product_admin,access_venta_product_admin,model_venta_product,group_administrador_configurado,1,1,1,1
+access_venta_product_user,access_venta_product_user,model_venta_product,base.group_user,1,0,0,0
+
+
+
+access_venta_product_user,access_venta_product_user,model_venta_product,base.group_user,1,0,0,0
+access_venta_product_admin,access_venta_product_admin,model_venta_product,base.group_system,1,1,1,1

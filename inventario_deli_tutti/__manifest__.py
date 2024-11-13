@@ -26,13 +26,15 @@
         "views/report_salida.xml",
         "views/especiales/costos_variables.xml",
         "views/especiales/pedidos_especiales.xml",
+        "views/venta_product_views.xml"
     ],
     "assets": {
         "web.assets_backend": [
-            "inventario_deli_tutti/static/src/css/custom_styles.css",
-        ],
+            "inventario_deli_tutti/static/src/css/custom_styles.css"
+        ]
     },
     "installable": True,
     "application": True,
-    "license": "LGPL-3", 
-}
+    "license": "LGPL-3",
+    "auto_install": False
+}   

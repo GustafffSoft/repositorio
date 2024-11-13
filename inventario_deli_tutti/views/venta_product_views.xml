@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Vista de formulario para Productos de Venta -->
+    <record id="view_venta_product_form" model="ir.ui.view">
+        <field name="name">venta.product.form</field>
+        <field name="model">venta.product</field>
+        <field name="arch" type="xml">
+            <form string="Producto de Venta">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="image" widget="image"/>
+                        <field name="cost"/>
+                        <field name="best_seller"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de árbol para Productos de Venta -->
+    <record id="view_venta_product_tree" model="ir.ui.view">
+        <field name="name">venta.product.tree</field>
+        <field name="model">venta.product</field>
+        <field name="arch" type="xml">
+            <tree string="Productos de Venta">
+                <field name="image" widget="image" class="oe_avatar small"/>
+                <field name="name"/>
+                <field name="cost"/>
+                <field name="best_seller"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista Kanban para Productos de Venta -->
+    <record id="view_venta_product_kanban" model="ir.ui.view">
+        <field name="name">venta.product.kanban</field>
+        <field name="model">venta.product</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_card o_kanban_record" t-att-data-id="record.id">
+                            <!-- Mostrar imagen solo si existe -->
+                            <div t-if="record.image">
+                                <img t-att-src="kanban_image('venta.product', 'image', record.id)"/>
+                            </div>
+                            <!-- Mostrar detalles del producto -->
+                            <div class="o_kanban_details">
+                                <strong>
+                                    <field name="name"/>
+                                </strong>
+                                <div>
+                                    <strong>Precio: </strong><field name="cost"/>
+                                </div>
+                                <t t-if="record.best_seller">
+                                    <div>
+                                        <strong>Más Vendido</strong>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Acción para la lista de productos de venta -->
+    <record id="action_venta_product_list" model="ir.actions.act_window">
+        <field name="name">Productos de Venta</field>
+        <field name="res_model">venta.product</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="view_venta_product_kanban"/>
+    </record>
+
+    <!-- Menú raíz para Ventas -->
+    <menuitem id="menu_ventas_pastel_root" name="Ventas Deli Tutti" sequence="10"/>
+
+    <!-- Submenú para Productos de Venta -->
+    <menuitem id="menu_venta_product" name="Productos de Venta" parent="menu_ventas_pastel_root" action="action_venta_product_list" sequence="20"/>
+
+    <!-- Vista de búsqueda para Productos de Venta -->
+    <record id="view_venta_product_search" model="ir.ui.view">
+        <field name="name">venta.product.search</field>
+        <field name="model">venta.product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Más Vendido" name="best_seller" domain="[('best_seller', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+</odoo>

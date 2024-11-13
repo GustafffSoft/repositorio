@@ -24,3 +24,7 @@ from .reportes   import reporte_inventario
 from .reportes   import reporte_entradas_almacen
 from .reportes   import reporte_produccion
 from .reportes   import reporte_salida
+
+
+from .ventas  import venta_product
+from .controllers import venta_product_controller
