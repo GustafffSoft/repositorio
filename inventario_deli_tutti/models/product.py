@@ -17,7 +17,9 @@ class Product(models.Model):
     minimo = fields.Float(string="Cantidad Mínima", default=0)
     maximo = fields.Float(string="Cantidad Máxima", default=0)
     image = fields.Binary(string="Imagen del Producto")
-
+    
+    # Agregando el campo de fecha de caducidad
+    fecha_caducidad = fields.Date(string="Fecha de Caducidad")
 
     @api.model
     def _get_next_item(self):

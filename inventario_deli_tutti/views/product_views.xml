@@ -14,6 +14,7 @@
                 <field name="existencia"/>
                 <field name="minimo"/>
                 <field name="maximo"/>
+                <field name="fecha_caducidad"/> <!-- Campo agregado -->
                 <field name="image" widget="image" class="oe_avatar small-image"/>
             </tree>
         </field>
@@ -36,6 +37,7 @@
                         <field name="existencia"/>
                         <field name="minimo"/>
                         <field name="maximo"/>
+                        <field name="fecha_caducidad"/> <!-- Campo agregado -->
                         <field name="image" widget="image" class="oe_avatar"/>
                     </group>
                 </sheet>
@@ -67,6 +69,9 @@
                                 </div>
                                 <div>
                                     <strong>Existencia: </strong><field name="existencia"/>
+                                </div>
+                                <div>
+                                    <strong>Caducidad: </strong><field name="fecha_caducidad"/> <!-- Campo agregado -->
                                 </div>
                             </div>
                         </div>
