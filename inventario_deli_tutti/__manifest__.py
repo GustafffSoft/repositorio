@@ -11,6 +11,7 @@
         "security/administrador_security.xml",
         "security/inventario_security.xml",
         "security/ir.model.access.csv",
+        "views/menu_entradas_salidas.xml",
         "views/product_views.xml",
         "views/contacto_proveedor.xml",
         "views/entrada.xml",
@@ -24,8 +25,11 @@
         "views/report_produccion.xml",
         "views/report_entradas.xml",
         "views/report_salida.xml",
+        "views/productos_por_lotes_views.xml",
+        "views/lote_historico_views.xml",
         "views/especiales/costos_variables.xml",
         "views/especiales/pedidos_especiales.xml",
+        
     ],
     "assets": {
         "web.assets_backend": [

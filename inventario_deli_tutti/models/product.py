@@ -13,28 +13,30 @@ class Product(models.Model):
     descripcion = fields.Text(string="Descripción")
     um = fields.Char(string="Unidad de Medida", required=True)
     costo_unitario = fields.Float(string="Costo Unitario")
-    existencia = fields.Float(string="Existencia")
+    existencia = fields.Float(string="Existencia", compute="_compute_existencia", store=True)
     minimo = fields.Float(string="Cantidad Mínima", default=0)
     maximo = fields.Float(string="Cantidad Máxima", default=0)
     image = fields.Binary(string="Imagen del Producto")
-    
-    # Agregando el campo de fecha de caducidad
-    fecha_caducidad = fields.Date(string="Fecha de Caducidad")
+
+    # Agregar relación con los lotes (líneas de entrada)
+    lotes_ids = fields.One2many('inventario.entrada.linea', 'producto_id', string="Lotes de Producto")
+
+    # Campo calculado para mostrar los lotes en la vista de árbol
+    lotes_info = fields.Char(string="Lotes Info", compute="_compute_lotes_info")
 
     @api.model
     def _get_next_item(self):
         last_product = self.search([], order='item desc', limit=1)
         return last_product.item + 1 if last_product else 1
 
-    @api.model
-    def create(self, vals):
-        if 'item' not in vals or vals.get('item') == 0:
-            vals['item'] = self._get_next_item()
-        return super(Product, self).create(vals)
+    @api.depends('lotes_ids.cantidad')
+    def _compute_existencia(self):
+        for product in self:
+            # Sumar las cantidades de los lotes activos
+            product.existencia = sum(lote.cantidad for lote in product.lotes_ids if lote.active)
 
-    def name_get(self):
-        result = []
-        for record in self:
-            name = record.descripcion or "Sin descripción"
-            result.append((record.id, name))
-        return result
+    @api.depends('lotes_ids')
+    def _compute_lotes_info(self):
+        for product in self:
+            lotes = product.lotes_ids.mapped('lote')
+            product.lotes_info = ", ".join(lotes) if lotes else "Sin Lotes"

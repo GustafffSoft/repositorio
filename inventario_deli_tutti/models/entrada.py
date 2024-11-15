@@ -10,13 +10,23 @@ class InventarioEntrada(models.Model):
     fecha_entrada = fields.Datetime(string="Fecha de Entrada", default=lambda self: datetime.datetime.now(), required=True)
     lineas_entrada = fields.One2many('inventario.entrada.linea', 'entrada_id', string="Líneas de Entrada")
     factura_imagen = fields.Binary(string="Imagen de Factura")  # Campo para la imagen de la factura
-    concepto = fields.Char(string="Concepto")  # Campo para almacenar el concepto
+    concepto = fields.Char(string="Concepto", required=False)  # Campo para almacenar el concepto
     numero_factura_proveedor = fields.Char(string="Número de Factura Proveedor")  # Campo opcional
+
+    # Campo calculado para mostrar la información de los productos ingresados
+    productos_info = fields.Char(string="Productos Info", compute="_compute_productos_info")
+
+    @api.depends('lineas_entrada')
+    def _compute_productos_info(self):
+        for entrada in self:
+            info = []
+            for linea in entrada.lineas_entrada:
+                info.append(f"{linea.producto_id.descripcion} ({linea.cantidad}) - Cad: {linea.fecha_caducidad}")
+            entrada.productos_info = "; ".join(info) if info else "Sin Productos"
 
     @api.model
     def create(self, vals):
         if vals.get('numero_factura', 'Nuevo') == 'Nuevo':
-            # Generación del número de factura en base a la estructura sugerida
             current_date = datetime.datetime.now()
             year_month = current_date.strftime('%Y%m')
             sequence = self.env['ir.sequence'].next_by_code('inventario.entrada') or '001'

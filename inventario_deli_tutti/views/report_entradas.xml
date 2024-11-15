@@ -5,12 +5,10 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <!-- Mostrar el logo y el nombre de la compañía -->
                         <div style="text-align: center; margin-bottom: 20px;">
                             <img t-att-src="logo_url" style="max-height: 100px;"/>
                             <h3><t t-esc="company_name"/></h3>
                         </div>
-                        
                         <h2>Reporte de Entradas al Almacén</h2>
                         <table class="table table-sm">
                             <thead>
@@ -59,7 +57,7 @@
             </t>
         </template>
 
-        <!-- Definición del reporte -->
+        <!-- Definición del reporte de entradas -->
         <report
             id="action_report_entradas"
             model="inventario.entrada"
@@ -69,7 +67,7 @@
             file="inventario_deli_tutti.report_entradas"
         />
 
-        <!-- Acción personalizada para el reporte de entradas al almacén -->
+        <!-- Acción personalizada para el reporte de entradas -->
         <record id="action_report_entradas_all" model="ir.actions.report">
             <field name="name">Reporte de Entradas</field>
             <field name="model">inventario.entrada</field>
@@ -78,13 +76,16 @@
             <field name="binding_model_id" ref="model_inventario_entrada"/>
         </record>
 
-        <!-- Submenú para el reporte de entradas -->
+        <!-- Menú Raíz para Reportes -->
+        <menuitem id="menu_inventory_reportes_root" name="Reportes" parent="menu_inventory_root" sequence="70"/>
+
+        <!-- Submenú para el Reporte de Entradas -->
         <menuitem
             id="menu_inventory_report_entradas"
             name="Reporte de Entradas"
-            parent="menu_inventory_root"
+            parent="menu_inventory_reportes_root"
             action="action_report_entradas_all"
-            sequence="30"
+            sequence="10"
         />
     </data>
 </odoo>

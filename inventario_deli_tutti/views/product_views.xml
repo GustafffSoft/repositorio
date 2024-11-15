@@ -10,11 +10,18 @@
                 <field name="clave"/>
                 <field name="descripcion"/>
                 <field name="um"/>
-                <field name="costo_unitario"/>
                 <field name="existencia"/>
                 <field name="minimo"/>
-                <field name="maximo"/>
-                <field name="fecha_caducidad"/> <!-- Campo agregado -->
+                <!-- Aquí agregamos detalles de los lotes directamente en la vista de árbol -->
+                <field name="lotes_ids" widget="one2many" context="{'default_producto_id': id}" mode="tree,form">
+                    <tree>
+                        <field name="lote"/>
+                        <field name="cantidad"/>
+                        <field name="costo_unitario"/>
+                        <field name="fecha_entrada"/>
+                        <field name="fecha_caducidad"/>
+                    </tree>
+                </field>
                 <field name="image" widget="image" class="oe_avatar small-image"/>
             </tree>
         </field>
@@ -33,13 +40,24 @@
                         <field name="clave"/>
                         <field name="descripcion"/>
                         <field name="um"/>
-                        <field name="costo_unitario"/>
                         <field name="existencia"/>
                         <field name="minimo"/>
                         <field name="maximo"/>
-                        <field name="fecha_caducidad"/> <!-- Campo agregado -->
                         <field name="image" widget="image" class="oe_avatar"/>
                     </group>
+                    <notebook>
+                        <page string="Lotes">
+                            <field name="lotes_ids">
+                                <tree>
+                                    <field name="lote"/>
+                                    <field name="cantidad"/>
+                                    <field name="costo_unitario"/>
+                                    <field name="fecha_entrada"/>
+                                    <field name="fecha_caducidad"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -65,13 +83,7 @@
                                     <field name="descripcion"/>
                                 </div>
                                 <div>
-                                    <strong>Precio: </strong><field name="costo_unitario"/>
-                                </div>
-                                <div>
                                     <strong>Existencia: </strong><field name="existencia"/>
-                                </div>
-                                <div>
-                                    <strong>Caducidad: </strong><field name="fecha_caducidad"/> <!-- Campo agregado -->
                                 </div>
                             </div>
                         </div>

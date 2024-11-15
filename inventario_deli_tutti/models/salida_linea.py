@@ -1,9 +1,5 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-import logging
-
-_logger = logging.getLogger(__name__)
-
 
 class InventarioSalidaLinea(models.Model):
     _name = 'inventario.salida.linea'
@@ -19,55 +15,53 @@ class InventarioSalidaLinea(models.Model):
     def create(self, vals):
         producto = self.env['inventario.product'].browse(vals['producto_id'])
 
-        # Calcular la cantidad disponible que no está asociada a lotes (existencia inicial)
-        cantidad_inicial_disponible = producto.existencia
-
-        # Calcular la cantidad total en lotes
+        # Obtener los lotes disponibles del producto, ordenados por fecha de caducidad y luego por fecha de entrada (FIFO)
         lotes = self.env['inventario.entrada.linea'].search([
             ('producto_id', '=', producto.id),
-            ('cantidad', '>', 0)  # Filtrar solo lotes con cantidad disponible
-        ], order='fecha_entrada asc')
-
-        cantidad_total_en_lotes = sum(lote.cantidad for lote in lotes)
-
-        # Determinar la cantidad total disponible (inicial + lotes)
-        cantidad_disponible = cantidad_inicial_disponible + cantidad_total_en_lotes
+            ('cantidad', '>', 0),
+            ('active', '=', True)  # Filtrar solo lotes activos
+        ], order='fecha_caducidad asc, fecha_entrada asc')
 
         cantidad_necesaria = vals['cantidad']
 
-        if cantidad_necesaria > cantidad_disponible:
-            mensaje = f"Advertencia: Estás intentando dar salida a {cantidad_necesaria} unidades de '{producto.descripcion}', pero solo hay {cantidad_disponible} unidades disponibles en stock."
-            _logger.warning(mensaje)
+        if cantidad_necesaria > sum(lote.cantidad for lote in lotes):
+            mensaje = f"Advertencia: Estás intentando dar salida a {cantidad_necesaria} unidades de '{producto.descripcion}', pero no hay suficiente cantidad en stock."
             raise UserError(mensaje)
 
-        # Primero utilizar la existencia inicial (que no está en lotes)
-        if cantidad_necesaria <= cantidad_inicial_disponible:
-            producto.existencia -= cantidad_necesaria
-            cantidad_necesaria = 0
-        else:
-            cantidad_necesaria -= cantidad_inicial_disponible
-            producto.existencia = 0
+        cantidad_restante = cantidad_necesaria
 
-        # Descontar la cantidad de los lotes, comenzando por los más antiguos
         for lote in lotes:
-            if cantidad_necesaria <= 0:
+            if cantidad_restante <= 0:
                 break
-            if cantidad_necesaria <= lote.cantidad:
-                lote.cantidad -= cantidad_necesaria
+
+            if cantidad_restante <= lote.cantidad:
+                # Reducir la cantidad del lote disponible
+                lote.sudo().write({'cantidad': lote.cantidad - cantidad_restante})
+
+                # Asignar el lote al registro de salida
                 vals['lote_id'] = lote.id
-                cantidad_necesaria = 0
+
+                cantidad_restante = 0
             else:
-                cantidad_necesaria -= lote.cantidad
-                lote.cantidad = 0
+                # Si la cantidad restante es mayor a la cantidad del lote actual, consumir completamente el lote
+                cantidad_consumida = lote.cantidad
+                lote.sudo().write({'cantidad': 0})
 
+                # Asignar el lote al registro de salida (se guardará solo el último lote completamente consumido)
+                vals['lote_id'] = lote.id
+                cantidad_restante -= cantidad_consumida
 
-                # Verificación para notificación de escasez
-        if producto.minimo and producto.existencia < producto.minimo:
-            mensaje = f"El producto '{producto.descripcion}' ha bajado por debajo del mínimo de {producto.minimo}. Existencia actual: {producto.existencia}."
-            self.env['inventario.notificacion'].create({
-                  'producto_id': producto.id,
-                  'tipo': 'escasez',
-                  'mensaje': mensaje,
+                # Archivar el lote cuando se agote
+                lote.sudo().write({'active': False})
+
+                # Crear notificación de agotamiento del lote
+                self.env['inventario.notificacion'].create({
+                    'producto_id': lote.producto_id.id,
+                    'tipo': 'agotado',
+                    'mensaje': f"El lote '{lote.lote}' del producto '{lote.producto_id.descripcion}' ha llegado a cero y ha sido archivado.",
                 })
 
-        return super(InventarioSalidaLinea, self).create(vals)
+        # Crear la línea de salida
+        salida_linea = super(InventarioSalidaLinea, self).create(vals)
+
+        return salida_linea

@@ -1,0 +1,28 @@
+<odoo>
+    <!-- Vista de árbol (lista) para Lotes Históricos -->
+    <record id="view_lote_historico_tree" model="ir.ui.view">
+        <field name="name">lote.historico.tree</field>
+        <field name="model">inventario.lote.historico</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="producto_id"/>
+                <field name="cantidad"/>
+                <field name="costo_unitario"/>
+                <field name="lote"/>
+                <field name="fecha_entrada"/>
+                <field name="fecha_caducidad"/>
+                <field name="fecha_consumo"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Acción para Lotes Históricos -->
+    <record id="action_lote_historico" model="ir.actions.act_window">
+        <field name="name">Lotes Históricos</field>
+        <field name="res_model">inventario.lote.historico</field>
+        <field name="view_mode">tree</field>
+    </record>
+    
+    <!-- Menú para Lotes Históricos -->
+    <!-- <menuitem id="menu_inventory_lote_historico" name="Lotes Históricos" parent="menu_inventory_root" action="action_lote_historico" sequence="11"/> -->
+</odoo>

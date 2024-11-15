@@ -1,60 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Vista de árbol (lista) para Salidas -->
-    <record id="view_salida_tree" model="ir.ui.view">
-        <field name="name">salida.tree</field>
-        <field name="model">inventario.salida</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="fecha_salida"/>
-            </tree>
-        </field>
-    </record>
+    <data>
+        <!-- Acción para las Salidas -->
+        <record id="action_salida" model="ir.actions.act_window">
+            <field name="name">Salidas</field>
+            <field name="res_model">inventario.salida</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-    <!-- Vista de formulario para Salidas -->
-    <record id="view_salida_form" model="ir.ui.view">
-        <field name="name">salida.form</field>
-        <field name="model">inventario.salida</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="fecha_salida"/>
-                    </group>
-                    <group>
-                        <field name="lineas_salida">
-                            <tree editable="bottom">
-                                <field name="producto_id"/>
-                                <field name="cantidad"/>
-                                <field name="detalles"/>
-                            </tree>
-                        </field>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+        <!-- Submenú para Salidas bajo Entradas y Salidas -->
+        <menuitem
+            id="menu_inventory_salida"
+            name="Salidas"
+            parent="menu_inventory_entradas_salidas"
+            action="action_salida"
+            sequence="20"
+        />
 
-    <!-- Vista de árbol (lista) para Líneas de Salida -->
-    <record id="view_salida_linea_tree" model="ir.ui.view">
-        <field name="name">salida.linea.tree</field>
-        <field name="model">inventario.salida.linea</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="producto_id"/>
-                <field name="cantidad"/>
-                <field name="detalles"/>
-                <field name="salida_id"/>
-            </tree>
-        </field>
-    </record>
+        <!-- Vista de formulario para las Salidas -->
+        <record id="view_salida_form" model="ir.ui.view">
+            <field name="name">salida.form</field>
+            <field name="model">inventario.salida</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="fecha_salida"/>
+                        </group>
+                        <group string="Líneas de Salida">
+                            <field name="lineas_salida">
+                                <tree editable="bottom">
+                                    <field name="producto_id"/>
+                                    <field name="cantidad"/>
+                                    <field name="lote_id" readonly="1"/>
+                                    <field name="detalles"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- Acción para el menú Salidas -->
-    <record id="action_salida" model="ir.actions.act_window">
-        <field name="name">Salidas</field>
-        <field name="res_model">inventario.salida</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+        <!-- Vista de árbol para las Salidas -->
+      <record id="view_salida_tree" model="ir.ui.view">
+            <field name="name">salida.tree</field>
+            <field name="model">inventario.salida</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="fecha_salida"/>
+                    <field name="productos_cantidad_resumen"/> <!-- Campo que muestra el resumen de productos y cantidades -->
+                </tree>
+            </field>
+      </record>
 
-    <!-- Menú para Salidas -->
-    <menuitem id="menu_inventory_salida" name="Salidas" parent="menu_inventory_root" action="action_salida" sequence="40"/>
+    </data>
 </odoo>

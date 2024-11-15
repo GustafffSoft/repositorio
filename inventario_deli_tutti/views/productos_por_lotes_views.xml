@@ -1,0 +1,64 @@
+<odoo>
+    <!-- Vista de árbol (lista) para los Lotes Activos -->
+    <record id="view_lotes_tree" model="ir.ui.view">
+        <field name="name">lotes.tree</field>
+        <field name="model">inventario.entrada.linea</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="producto_id"/>
+                <field name="lote"/>
+                <field name="fecha_entrada"/>
+                <field name="cantidad_inicial" readonly="1"/>
+                <field name="cantidad"/>
+                <field name="fecha_caducidad"/>
+                <field name="costo_unitario"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para los Lotes Activos -->
+    <record id="view_lotes_form" model="ir.ui.view">
+        <field name="name">lotes.form</field>
+        <field name="model">inventario.entrada.linea</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="producto_id"/>
+                        <field name="lote"/>
+                        <field name="fecha_entrada"/>
+                        <field name="cantidad_inicial" readonly="1"/>
+                        <field name="cantidad"/>
+                        <field name="fecha_caducidad"/>
+                        <field name="costo_unitario"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para los Lotes Activos -->
+    <record id="action_lotes" model="ir.actions.act_window">
+        <field name="name">Lotes Activos</field>
+        <field name="res_model">inventario.entrada.linea</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_lotes_tree"/>
+        <field name="domain">[('active', '=', True)]</field> <!-- Solo mostrar lotes activos -->
+    </record>
+
+    <!-- Acción para los Lotes Históricos -->
+    <record id="action_lotes_historico" model="ir.actions.act_window">
+        <field name="name">Lotes Históricos</field>
+        <field name="res_model">inventario.lote.historico</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menú para Lotes de Productos -->
+    <menuitem id="menu_inventory_lotes" name="Lotes de Productos" parent="menu_inventory_root" sequence="50"/>
+
+    <!-- Submenú para Lotes Activos -->
+    <menuitem id="menu_inventory_lotes_activos" name="Lotes Activos" parent="menu_inventory_lotes" action="action_lotes" sequence="10"/>
+
+    <!-- Submenú para Lotes Históricos -->
+    <menuitem id="menu_inventory_lotes_historico" name="Lotes Históricos" parent="menu_inventory_lotes" action="action_lotes_historico" sequence="20"/>
+</odoo>

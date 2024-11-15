@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Menú Raíz para Entradas y Salidas -->
+        <menuitem
+            id="menu_inventory_entradas_salidas"
+            name="Entradas y Salidas"
+            parent="menu_inventory_root"
+            sequence="35"
+        />
+    </data>
+</odoo>

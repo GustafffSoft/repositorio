@@ -1,52 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="view_entrada_form" model="ir.ui.view">
-        <field name="name">entrada.form</field>
-        <field name="model">inventario.entrada</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="numero_factura" readonly="1"/> <!-- Número de Factura generado automáticamente -->
-                        <field name="proveedor_id"/>
-                        <field name="fecha_entrada"/>
-                        <field name="concepto"/> <!-- Campo para el concepto -->
-                        <field name="numero_factura_proveedor"/> <!-- Campo opcional para el número de factura del proveedor -->
-                        <field name="factura_imagen"/> <!-- Campo para la imagen de la factura -->
-                    </group>
-                    <group string="Líneas de Entrada">
-                        <field name="lineas_entrada">
-                            <tree editable="bottom">
-                                <field name="producto_id"/>
-                                <field name="cantidad"/>
-                                <field name="costo_unitario"/>
-                                <field name="lote"/>
-                            </tree>
-                        </field>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
+    <data>
+        <!-- Acción para las Entradas -->
+        <record id="action_entrada" model="ir.actions.act_window">
+            <field name="name">Entradas</field>
+            <field name="res_model">inventario.entrada</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-    <record id="view_entrada_tree" model="ir.ui.view">
-        <field name="name">entrada.tree</field>
-        <field name="model">inventario.entrada</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="numero_factura"/> <!-- Mostrar número de factura en la vista de lista -->
-                <field name="proveedor_id"/>
-                <field name="fecha_entrada"/>
-                <field name="concepto"/> <!-- Mostrar concepto en la vista de lista -->
-                <field name="numero_factura_proveedor"/> <!-- Mostrar número de factura del proveedor en la vista de lista -->
-            </tree>
-        </field>
-    </record>
+        <!-- Submenú para Entradas bajo Entradas y Salidas -->
+        <menuitem
+            id="menu_inventory_entrada"
+            name="Entradas"
+            parent="menu_inventory_entradas_salidas"
+            action="action_entrada"
+            sequence="10"
+        />
 
-    <record id="action_entrada" model="ir.actions.act_window">
-        <field name="name">Entradas</field>
-        <field name="res_model">inventario.entrada</field>
-        <field name="view_mode">tree,form</field>
-    </record>
+        <!-- Vista de formulario para las Entradas -->
+        <record id="view_entrada_form" model="ir.ui.view">
+            <field name="name">entrada.form</field>
+            <field name="model">inventario.entrada</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="numero_factura" readonly="1"/>
+                            <field name="proveedor_id"/>
+                            <field name="fecha_entrada"/>
+                            <field name="concepto"/>
+                            <field name="numero_factura_proveedor"/>
+                            <field name="factura_imagen"/>
+                        </group>
+                        <group string="Líneas de Entrada">
+                            <field name="lineas_entrada">
+                                <tree editable="bottom">
+                                    <field name="producto_id"/>
+                                    <field name="cantidad"/>
+                                    <field name="costo_unitario"/>
+                                    <field name="lote"/>
+                                    <field name="fecha_caducidad"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <menuitem id="menu_inventory_entrada" name="Entradas" parent="menu_inventory_root" action="action_entrada" sequence="30"/>
+        <!-- Vista de árbol para las Entradas -->
+        <record id="view_entrada_tree" model="ir.ui.view">
+            <field name="name">entrada.tree</field>
+            <field name="model">inventario.entrada</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="numero_factura"/>
+                    <field name="proveedor_id"/>
+                    <field name="fecha_entrada"/>
+                    <field name="concepto"/>
+                    <field name="numero_factura_proveedor"/>
+                </tree>
+            </field>
+        </record>
+    </data>
 </odoo>
