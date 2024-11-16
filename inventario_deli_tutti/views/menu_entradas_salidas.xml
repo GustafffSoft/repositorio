@@ -3,6 +3,12 @@
     <data>
         <!-- Menú Raíz para Entradas y Salidas -->
         <menuitem
+            id="menu_inventory_root"
+            name="Inventario Deli Tutti"
+            sequence="1"
+        />
+        
+        <menuitem
             id="menu_inventory_entradas_salidas"
             name="Entradas y Salidas"
             parent="menu_inventory_root"

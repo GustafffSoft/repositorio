@@ -43,7 +43,7 @@
         </record>
 
         <!-- Vista de árbol para las Salidas -->
-      <record id="view_salida_tree" model="ir.ui.view">
+        <record id="view_salida_tree" model="ir.ui.view">
             <field name="name">salida.tree</field>
             <field name="model">inventario.salida</field>
             <field name="arch" type="xml">
@@ -52,7 +52,7 @@
                     <field name="productos_cantidad_resumen"/> <!-- Campo que muestra el resumen de productos y cantidades -->
                 </tree>
             </field>
-      </record>
+        </record>
 
     </data>
 </odoo>
