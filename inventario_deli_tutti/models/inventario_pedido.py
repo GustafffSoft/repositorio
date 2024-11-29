@@ -13,8 +13,16 @@ class InventarioPedido(models.Model):
     ], string="Origen del Pedido", required=True)    
     fecha_pedido = fields.Datetime(string="Fecha del Pedido", required=True)
     estado = fields.Selection([('por_entregar', 'Por entregar'), ('entregado', 'Entregado')], string="Estado", default='por_entregar')
-    um = fields.Char(string="Unidad de Medida", related='producto_id.um', store=True, readonly=True)  # Agregado este campo
-
+    um = fields.Selection(
+    selection=[
+        ('kg', 'Kilogramos (KG)'),
+        ('lt', 'Litros (LT)'),
+        ('Pzs', 'Piezas (Pz)'),
+    ],
+    string="Unidad de Medida",
+    related='producto_id.um',
+    store=True
+)
 
 
     @api.model

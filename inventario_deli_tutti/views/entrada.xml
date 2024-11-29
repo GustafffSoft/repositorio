@@ -31,6 +31,7 @@
                             <field name="concepto"/>
                             <field name="numero_factura_proveedor"/>
                             <field name="factura_imagen"/>
+                            <field name="total_costo" readonly="1"/>
                         </group>
                         <group string="Líneas de Entrada">
                             <field name="lineas_entrada">
@@ -59,6 +60,7 @@
                     <field name="fecha_entrada"/>
                     <field name="concepto"/>
                     <field name="numero_factura_proveedor"/>
+                    <field name="total_costo"/>
                 </tree>
             </field>
         </record>

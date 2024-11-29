@@ -97,8 +97,8 @@
     <record id="action_product" model="ir.actions.act_window">
         <field name="name">Productos</field>
         <field name="res_model">inventario.product</field>
-        <field name="view_mode">kanban,tree,form</field>
-        <field name="view_id" ref="view_product_kanban"/>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="view_id" ref="view_product_tree"/>
     </record>
 
     <!-- Menú raíz -->

@@ -1,0 +1,15 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Cron Job para Actualizar los Mínimos Semanales -->
+        <record id="ir_cron_actualizar_minimos" model="ir.cron">
+            <field name="name">Actualizar Mínimos Semanales</field>
+            <field name="model_id" ref="model_inventario_product"/>
+            <field name="state">code</field>
+            <field name="code">model.actualizar_minimos()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_type">weeks</field>
+            <field name="interval_number">1</field>
+            <field name="nextcall">2024-12-02 22:00:00</field>
+        </record>
+    </data>
+</odoo>

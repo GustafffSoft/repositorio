@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import datetime, timedelta
 
 class Product(models.Model):
     _name = 'inventario.product'
@@ -11,12 +12,21 @@ class Product(models.Model):
     categoria_id = fields.Many2one('inventario.categoria', string="Categoría", required=True)
     clave = fields.Char(string="Clave")
     descripcion = fields.Text(string="Descripción")
-    um = fields.Char(string="Unidad de Medida", required=True)
     costo_unitario = fields.Float(string="Costo Unitario")
     existencia = fields.Float(string="Existencia", compute="_compute_existencia", store=True)
     minimo = fields.Float(string="Cantidad Mínima", default=0)
     maximo = fields.Float(string="Cantidad Máxima", default=0)
     image = fields.Binary(string="Imagen del Producto")
+    um = fields.Selection(
+    selection=[
+        ('kg', 'Kilogramos (KG)'),
+        ('lt', 'Litros (LT)'),
+        ('Pzs', 'Piezas (Pz)'),
+    ],
+    string="Unidad de Medida",
+    required=True,
+    default='kg'
+                        )
 
     # Agregar relación con los lotes (líneas de entrada)
     lotes_ids = fields.One2many('inventario.entrada.linea', 'producto_id', string="Lotes de Producto")
@@ -40,3 +50,25 @@ class Product(models.Model):
         for product in self:
             lotes = product.lotes_ids.mapped('lote')
             product.lotes_info = ", ".join(lotes) if lotes else "Sin Lotes"
+
+
+
+    @api.model
+    def actualizar_minimos(self):
+        """
+        Calcula el mínimo semanal de cada producto según las salidas de la última semana.
+        """
+        # Calcular fecha de inicio de la semana
+        inicio_semana = datetime.now() - timedelta(days=7)
+
+        # Obtener las salidas de productos en la última semana
+        salidas = self.env['inventario.salida.linea'].read_group(
+            [('salida_id.fecha_salida', '>=', inicio_semana)],  # Filtrar salidas en los últimos 7 días
+            ['producto_id', 'cantidad:sum'],                   # Sumar las cantidades agrupadas por producto
+            ['producto_id']
+        )
+
+        # Actualizar el campo `minimo` para cada producto
+        for salida in salidas:
+            producto = self.browse(salida['producto_id'][0])
+            producto.minimo = salida['cantidad']  # Asignar la suma de cantidades como el nuevo mínimo

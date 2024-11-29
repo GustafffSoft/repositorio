@@ -8,6 +8,16 @@ class InventarioSalida(models.Model):
     fecha_salida = fields.Datetime(string="Fecha de Salida", default=lambda self: datetime.datetime.now(), required=True)
     lineas_salida = fields.One2many('inventario.salida.linea', 'salida_id', string="Líneas de Salida")
     productos_cantidad_resumen = fields.Text(string="Productos y Cantidades", compute="_compute_productos_cantidad_resumen")
+    total_costo = fields.Float(string="Costo Total de Salida", compute="_compute_total_costo", store=True)
+
+    @api.depends('lineas_salida.cantidad', 'lineas_salida.lote_id.costo_unitario')
+    def _compute_total_costo(self):
+        for salida in self:
+            salida.total_costo = sum(
+                linea.cantidad * linea.lote_id.costo_unitario
+                for linea in salida.lineas_salida
+                if linea.lote_id and linea.cantidad > 0
+            )
 
     @api.depends('lineas_salida.producto_id', 'lineas_salida.cantidad')
     def _compute_productos_cantidad_resumen(self):

@@ -12,6 +12,7 @@ class InventarioEntrada(models.Model):
     factura_imagen = fields.Binary(string="Imagen de Factura")  # Campo para la imagen de la factura
     concepto = fields.Char(string="Concepto", required=False)  # Campo para almacenar el concepto
     numero_factura_proveedor = fields.Char(string="Número de Factura Proveedor")  # Campo opcional
+    total_costo = fields.Float(string="Total de Costo", compute="_compute_total_costo", store=True)
 
     # Campo calculado para mostrar la información de los productos ingresados
     productos_info = fields.Char(string="Productos Info", compute="_compute_productos_info")
@@ -32,3 +33,9 @@ class InventarioEntrada(models.Model):
             sequence = self.env['ir.sequence'].next_by_code('inventario.entrada') or '001'
             vals['numero_factura'] = f'ALM-{year_month}-{sequence}'
         return super(InventarioEntrada, self).create(vals)
+  
+  
+    @api.depends('lineas_entrada.cantidad', 'lineas_entrada.costo_unitario')
+    def _compute_total_costo(self):
+        for entrada in self:
+            entrada.total_costo = sum(linea.cantidad * linea.costo_unitario for linea in entrada.lineas_entrada)

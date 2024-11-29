@@ -28,7 +28,8 @@
         "views/productos_por_lotes_views.xml",    
         "views/lote_historico_views.xml",
         "views/especiales/costos_variables.xml",  
-        "views/especiales/pedidos_especiales.xml" 
+        "views/especiales/pedidos_especiales.xml",
+        'data/cron.xml',
     ],
     "assets": {
         "web.assets_backend": [

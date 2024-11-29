@@ -26,13 +26,13 @@
                     <sheet>
                         <group>
                             <field name="fecha_salida"/>
+                            <field name="total_costo" readonly="1"/> <!-- Mueve el total_costo aquí -->
                         </group>
                         <group string="Líneas de Salida">
                             <field name="lineas_salida">
                                 <tree editable="bottom">
                                     <field name="producto_id"/>
                                     <field name="cantidad"/>
-                                    <field name="lote_id" readonly="1"/>
                                     <field name="detalles"/>
                                 </tree>
                             </field>
@@ -50,6 +50,7 @@
                 <tree>
                     <field name="fecha_salida"/>
                     <field name="productos_cantidad_resumen"/> <!-- Campo que muestra el resumen de productos y cantidades -->
+                    <field name="total_costo"/>
                 </tree>
             </field>
         </record>

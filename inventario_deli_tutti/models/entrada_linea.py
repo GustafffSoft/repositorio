@@ -9,7 +9,7 @@ class InventarioEntradaLinea(models.Model):
     cantidad = fields.Float(string="Cantidad", required=True)  # Cantidad que queda disponible del lote
     cantidad_inicial = fields.Float(string="Cantidad Inicial", required=True)  # Cantidad que ingresó originalmente
     costo_unitario = fields.Float(string="Costo Unitario", required=True)
-    lote = fields.Char(string="Lote")
+    lote = fields.Char(string="Lote", required=True)
     entrada_id = fields.Many2one('inventario.entrada', string="Entrada", ondelete='cascade')
     fecha_entrada = fields.Datetime(related='entrada_id.fecha_entrada', string="Fecha de Entrada", store=True)
     fecha_caducidad = fields.Date(string="Fecha de Caducidad", required=True)
